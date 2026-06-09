@@ -1,32 +1,56 @@
 # FIFA World Cup 2026 Prediction Agent
 
-TypeScript agent that predicts FIFA World Cup 2026 match outcomes, group standings, and tournament winners using an ensemble of Elo, Poisson, and form-based models.
+TypeScript agent that predicts FIFA World Cup 2026 match outcomes, group standings, and tournament winners using an ensemble of Elo, Poisson, and form-based models — with optional AI hybrid blending and value-bet detection.
 
 ## Features
 
-- **Match predictions** — win/draw/loss probabilities and expected goals
+- **Match predictions** — win/draw/loss probabilities and expected goals per fixture
 - **Group standings** — simulated points tables from predicted results
 - **Tournament simulation** — projected champion and semifinalists
 - **Value bet detection** — compare model vs market odds with Kelly sizing
 - **Agent tools** — extensible tool-based prediction orchestration
+- **AI hybrid mode** — blend statistical ensemble with LLM qualitative analysis
+- **Redis cache** — optional caching for predictions and comparisons
 
-## Quick Start
+## Quick start
+
+**Requirements:** Node.js 20+
 
 ```bash
 npm install
-npm run predict -- configs                        # list prediction configs
-npm run predict -- predict A1                     # default (balanced)
-npm run predict -- predict A1 --config elo-heavy  # use a specific config
-npm run predict -- predict A1 --ai                # hybrid: statistical + AI
-npm run predict -- hybrid A1 --ai-weight 0.4      # side-by-side breakdown
-npm run predict -- compare A1                     # compare all configs + hybrid
-npm run predict -- standings
-npm run predict -- tournament --config host-bias
-npm run predict -- value-bets
 npm test
+npm run predict -- configs
+npm run predict -- predict A1
+npm run predict -- standings
+npm run predict -- value-bets
 ```
 
-## AI Integration
+## CLI reference
+
+| Command | Description |
+|---------|-------------|
+| `configs` | List available prediction config profiles |
+| `predict <id> [--config name] [--ai]` | Single-match prediction (optional AI hybrid) |
+| `hybrid <id> [--ai-weight n]` | Side-by-side statistical vs AI breakdown |
+| `compare <id>` | Compare all configs + hybrid on one fixture |
+| `standings` | Simulated group tables |
+| `tournament [--config name]` | Bracket / champion projection |
+| `value-bets` | Model vs market edge scan with Kelly hints |
+| `redis ping` / `redis flush` | Cache health and purge |
+
+### Examples
+
+```bash
+npm run predict -- predict A1
+npm run predict -- predict A1 --config elo-heavy
+npm run predict -- predict A1 --ai
+npm run predict -- hybrid A1 --ai-weight 0.4
+npm run predict -- compare A1
+npm run predict -- tournament --config host-bias
+npm run predict -- value-bets
+```
+
+## AI integration
 
 Combine statistical models with an LLM for qualitative factors (form, tactics, host pressure).
 
@@ -39,11 +63,10 @@ Combine statistical models with an LLM for qualitative factors (form, tactics, h
 Copy `.env.example` to `.env` and set your key. Works with any OpenAI-compatible endpoint via `AI_BASE_URL`.
 
 ```bash
-# Default blend: 70% statistical + 30% AI
 AI_BLEND_WEIGHT=0.3 npm run predict -- hybrid A1
 ```
 
-## Prediction Configs
+## Prediction configs
 
 | Config | Best for |
 |--------|----------|
@@ -56,27 +79,58 @@ AI_BLEND_WEIGHT=0.3 npm run predict -- hybrid A1
 
 Pass `--config <name>` to any command, or use `compare` to see all configs side-by-side.
 
-## Models
+## Models (balanced ensemble)
 
-| Model | Weight (balanced) | Description |
+| Model | Weight | Description |
 |-------|--------|-------------|
 | Elo | 35% | Rating-based win probability with home advantage |
 | Poisson | 30% | Goal distribution from attack/defense strength |
 | Form | 20% | Recent results momentum score |
 | Squad | 15% | Squad market value strength (optional) |
 
-## Project Structure
+## Architecture
 
 ```
-src/
-├── agent/          # Prediction agent and tools
-├── ai/             # AI provider, prompt builder, hybrid combiner
-├── cli/            # Command-line interface
-├── config/         # Prediction + AI config profiles
-├── data/           # Teams, groups, venues, fixtures
-├── models/         # Elo, Poisson, form, ensemble
-├── odds/           # Market odds and value bets
-├── predictions/    # Match and tournament predictors
-├── types/          # TypeScript interfaces
-└── utils/          # Kelly, EV, logging, formatting
+fifa-world-cup-2026-prediction-agent/
+├── src/
+│   ├── agent/          Prediction agent and tools
+│   ├── ai/             AI provider, prompt builder, hybrid combiner
+│   ├── cli/            Command-line interface
+│   ├── config/         Prediction + AI config profiles
+│   ├── data/           Teams, groups, venues, fixtures
+│   ├── models/         Elo, Poisson, form, ensemble
+│   ├── odds/           Market odds and value bets
+│   ├── predictions/    Match and tournament predictors
+│   ├── types/          TypeScript interfaces
+│   └── utils/          Kelly, EV, logging, Redis cache
+└── tests/
+```
+
+## Environment variables
+
+| Variable | Description |
+|----------|-------------|
+| `OPENAI_API_KEY` | Live AI hybrid mode |
+| `AI_BASE_URL` | OpenAI-compatible API base |
+| `AI_BLEND_WEIGHT` | AI weight in hybrid (default 0.3) |
+| `REDIS_URL` / `REDIS_HOST` | Optional prediction cache |
+| `REDIS_ENABLED` | `false` for memory-only |
+
+## Scripts
+
+| Script | Description |
+|--------|-------------|
+| `npm run predict` | CLI agent |
+| `npm run typecheck` | TypeScript check |
+| `npm run build` | Library build |
+| `npm test` | Vitest |
+
+## Library usage
+
+```typescript
+import { predictMatch } from "./src/predictions/matchPredictor.js";
+import { findValueBets } from "./src/odds/valueBets.js";
+
+const result = predictMatch("A1", "balanced");
+const edges = findValueBets();
 ```
