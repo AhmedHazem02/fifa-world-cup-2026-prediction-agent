@@ -53,9 +53,11 @@ async function main(): Promise<void> {
       }
       break;
     }
+    case "help":
     default:
+      const { printHelp } = await import("./commands.js");
       console.log("FIFA World Cup 2026 Prediction Agent");
-      console.log("Commands: predict, standings, tournament, value-bets");
+      printHelp();
   }
 }
 
