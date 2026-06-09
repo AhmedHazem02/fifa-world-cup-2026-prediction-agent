@@ -11,12 +11,18 @@ export interface AgentContext {
   memory: AgentMemory;
   fixtures: MatchFixture[];
   verbose: boolean;
+  configId: string;
 }
 
-export function createAgentContext(fixtures: MatchFixture[], verbose = false): AgentContext {
+export function createAgentContext(
+  fixtures: MatchFixture[],
+  verbose = false,
+  configId = "balanced"
+): AgentContext {
   return {
     memory: { predictions: new Map(), lastTournament: null, queries: [] },
     fixtures,
     verbose,
+    configId,
   };
 }

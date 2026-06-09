@@ -22,17 +22,17 @@ export function executeTool(
     case "predict_match": {
       const fixture = ctx.fixtures.find((f) => f.id === args.matchId);
       if (!fixture) throw new Error(`Fixture ${args.matchId} not found`);
-      const pred = predictMatch({ fixture });
+      const pred = predictMatch({ fixture, configId: ctx.configId });
       ctx.memory.predictions.set(fixture.id, pred);
       return pred;
     }
     case "predict_tournament": {
-      const result = predictTournament();
+      const result = predictTournament(ctx.configId);
       ctx.memory.lastTournament = result;
       return result;
     }
     case "get_standings":
-      return simulateGroupStandings();
+      return simulateGroupStandings(ctx.configId);
     case "lookup_team": {
       const team = getTeamById(args.id) ?? getTeamById(args.code?.toLowerCase() ?? "");
       return team ?? null;
