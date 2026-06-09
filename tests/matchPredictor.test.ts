@@ -8,6 +8,7 @@ describe("Match predictor", () => {
     expect(pred.homeWinProb + pred.drawProb + pred.awayWinProb).toBeCloseTo(1, 2);
     expect(pred.confidence).toBeGreaterThan(0);
     expect(pred.expectedHomeGoals).toBeGreaterThan(0);
+    expect(pred.configId).toBe("balanced");
   });
 
   it("throws for unknown teams", () => {
