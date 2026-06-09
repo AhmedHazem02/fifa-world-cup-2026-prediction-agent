@@ -1,3 +1,4 @@
+import type { ModelWeights } from "../config/predictionConfigs.js";
 import { MODEL_WEIGHTS } from "../constants.js";
 
 export interface ModelOutput {
@@ -8,13 +9,16 @@ export interface ModelOutput {
   expectedAwayGoals?: number;
 }
 
-export function ensemblePredict(outputs: {
-  elo: ModelOutput;
-  poisson: ModelOutput;
-  form: ModelOutput;
-  squad?: ModelOutput;
-}): ModelOutput {
-  const w = MODEL_WEIGHTS;
+export function ensemblePredict(
+  outputs: {
+    elo: ModelOutput;
+    poisson: ModelOutput;
+    form: ModelOutput;
+    squad?: ModelOutput;
+  },
+  weights: ModelWeights = MODEL_WEIGHTS
+): ModelOutput {
+  const w = weights;
   const squad = outputs.squad ?? { home: 0.33, draw: 0.34, away: 0.33 };
   const squadWeight = outputs.squad ? w.squad : 0;
   const totalWeight = w.elo + w.poisson + w.form + squadWeight;

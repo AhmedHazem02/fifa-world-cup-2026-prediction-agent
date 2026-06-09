@@ -7,6 +7,7 @@ export interface MatchPrediction {
   expectedAwayGoals: number;
   confidence: number;
   model: string;
+  configId: string;
 }
 
 export interface TournamentPrediction {
@@ -15,6 +16,7 @@ export interface TournamentPrediction {
   semifinalists: string[];
   topScorer: string;
   groupWinners: Record<string, string>;
+  configId: string;
 }
 
 export interface ValueBet {
