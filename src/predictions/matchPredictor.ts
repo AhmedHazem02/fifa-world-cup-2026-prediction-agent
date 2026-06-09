@@ -28,20 +28,36 @@ export function predictMatch(input: PredictorInput): MatchPrediction {
   const homeLambda = expectedGoals(homeAD.attack, awayAD.defense);
   const awayLambda = expectedGoals(awayAD.attack, homeAD.defense);
   const matrix = scoreMatrix(homeLambda, awayLambda);
-  const poisson = outcomeProbsFromMatrix(matrix);
-  poisson.expectedHomeGoals = homeLambda;
-  poisson.expectedAwayGoals = awayLambda;
+  const poissonOutcomes = outcomeProbsFromMatrix(matrix);
+  const poisson = {
+    ...poissonOutcomes,
+    expectedHomeGoals: homeLambda,
+    expectedAwayGoals: awayLambda,
+  };
 
   const homeFormScore = calculateFormScore(homeForm);
   const awayFormScore = calculateFormScore(awayForm);
   const formTotal = homeFormScore + awayFormScore || 1;
-  const form = {
-    home: homeFormScore / formTotal * 0.7 + 0.15,
-    away: awayFormScore / formTotal * 0.7 + 0.15,
+  const formRaw = {
+    home: (homeFormScore / formTotal) * 0.8,
+    away: (awayFormScore / formTotal) * 0.8,
     draw: 0.2,
   };
+  const formSum = formRaw.home + formRaw.draw + formRaw.away;
+  const form = {
+    home: formRaw.home / formSum,
+    draw: formRaw.draw / formSum,
+    away: formRaw.away / formSum,
+  };
 
-  const ensemble = ensemblePredict({ elo, poisson, form });
+  const ensembleRaw = ensemblePredict({ elo, poisson, form });
+  const ensSum = ensembleRaw.home + ensembleRaw.draw + ensembleRaw.away;
+  const ensemble = {
+    ...ensembleRaw,
+    home: ensembleRaw.home / ensSum,
+    draw: ensembleRaw.draw / ensSum,
+    away: ensembleRaw.away / ensSum,
+  };
   const agreement = modelAgreement([
     [elo.home, elo.draw, elo.away],
     [poisson.home, poisson.draw, poisson.away],
