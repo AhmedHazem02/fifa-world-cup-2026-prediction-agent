@@ -1,0 +1,25 @@
+{
+  "name": "fifa-world-cup-2026-prediction-agent",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "AI-powered FIFA World Cup 2026 match and tournament prediction agent",
+  "scripts": {
+    "build": "tsc -p tsconfig.lib.json",
+    "typecheck": "tsc -p tsconfig.json",
+    "predict": "tsx src/cli/main.ts",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.6"
+  },
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "csv-parse": "^5.6.0",
+    "undici": "^7.3.0"
+  }
+}
