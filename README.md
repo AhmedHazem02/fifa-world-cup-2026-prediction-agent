@@ -23,6 +23,7 @@ npm install
 npm test
 npm run predict -- configs
 npm run predict -- predict A1
+npm run predict -- clubs Arsenal Chelsea
 npm run predict -- standings
 npm run predict -- value-bets
 ```
@@ -31,6 +32,7 @@ npm run predict -- value-bets
 
 | Command | Description |
 |---------|-------------|
+| `clubs <home> <away> [--mock-ai] [--no-ai]` | Club match prediction from two team names (remote CSV history + AI hybrid) |
 | `configs` | List available prediction config profiles |
 | `predict <id> [--config name] [--ai]` | Single-match prediction (optional AI hybrid) |
 | `hybrid <id> [--ai-weight n]` | Side-by-side statistical vs AI breakdown |
@@ -43,6 +45,8 @@ npm run predict -- value-bets
 ### Examples
 
 ```bash
+npm run predict -- clubs Arsenal Chelsea
+npm run predict -- clubs Arsenal Chelsea --mock-ai
 npm run predict -- predict A1
 npm run predict -- predict A1 --config elo-heavy
 npm run predict -- predict A1 --ai
@@ -51,6 +55,23 @@ npm run predict -- compare A1
 npm run predict -- tournament --config host-bias
 npm run predict -- value-bets
 ```
+
+## Club predictions (agent + tools)
+
+Predict domestic club fixtures by team name — separate from the World Cup `matchId` flow and from [sports-betting-toolbox](https://github.com/georgedouzas/sports-betting). Uses `PredictionAgent.predictClubs()` and the `predict_clubs` agent tool.
+
+1. Loads remote soccer CSV history (England, Spain, Italy, Germany, France)
+2. Builds team form and head-to-head context
+3. Blends statistical baseline with AI via the existing `ai/` provider pattern
+
+```bash
+cp .env.example .env   # set OPENAI_API_KEY for live AI
+npm run predict -- clubs Arsenal Chelsea
+npm run predict -- clubs Arsenal Chelsea --mock-ai   # offline
+npm run predict -- clubs Arsenal Chelsea --no-ai      # statistical only
+```
+
+Output: home/draw/away probabilities, predicted outcome, confidence, and AI reasoning.
 
 ## AI integration
 
@@ -99,10 +120,10 @@ fifa-world-cup-2026-prediction-agent/
 │   ├── ai/             AI provider, prompt builder, hybrid combiner
 │   ├── cli/            Command-line interface
 │   ├── config/         Prediction + AI config profiles
-│   ├── data/           Teams, groups, venues, fixtures
+│   ├── data/           Teams, groups, venues, fixtures, club CSV history
 │   ├── models/         Elo, Poisson, form, ensemble
 │   ├── odds/           Market odds and value bets
-│   ├── predictions/    Match and tournament predictors
+│   ├── predictions/    Match, club, and tournament predictors
 │   ├── types/          TypeScript interfaces
 │   └── utils/          Kelly, EV, logging, Redis cache
 └── tests/

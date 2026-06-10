@@ -7,13 +7,19 @@ export interface AiConfig {
   timeoutMs: number;
 }
 
+import { loadEnv } from "./env.js";
+
 export function getAiConfig(): AiConfig {
+  loadEnv();
   const apiKey = process.env.OPENAI_API_KEY ?? process.env.AI_API_KEY;
   return {
     enabled: true,
     apiKey,
-    baseUrl: process.env.AI_BASE_URL ?? "https://api.openai.com/v1",
-    model: process.env.AI_MODEL ?? "gpt-4o-mini",
+    baseUrl:
+      process.env.AI_BASE_URL ??
+      process.env.OPENAI_BASE_URL ??
+      "https://api.openai.com/v1",
+    model: process.env.AI_MODEL ?? process.env.OPENAI_MODEL ?? "gpt-4o-mini",
     defaultBlendWeight: clamp(
       parseFloat(process.env.AI_BLEND_WEIGHT ?? "0.3"),
       0,

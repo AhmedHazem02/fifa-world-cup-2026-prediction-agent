@@ -1,4 +1,5 @@
 export { PredictionAgent } from "./agent/predictionAgent.js";
+export { predictClubs } from "./predictions/clubMatchPredictor.js";
 export { predictMatch } from "./predictions/matchPredictor.js";
 export { predictMatchHybrid } from "./predictions/hybridPredictor.js";
 export { combineStatisticalAndAi } from "./predictions/combinePredictions.js";
@@ -18,6 +19,7 @@ export {
 } from "./config/predictionConfigs.js";
 export type { PredictionConfig, ModelWeights } from "./config/predictionConfigs.js";
 export type { AiMatchPrediction, HybridMatchPrediction, AiProvider } from "./ai/types.js";
+export type { ClubMatchPrediction } from "./types/club.js";
 export type { MatchPrediction, TournamentPrediction, ValueBet } from "./types/prediction.js";
 export type { Team } from "./types/team.js";
 export type { MatchFixture } from "./types/match.js";

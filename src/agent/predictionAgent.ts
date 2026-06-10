@@ -2,8 +2,10 @@ import { GROUP_FIXTURES } from "../data/fixtures.js";
 import { createAgentContext, type AgentContext } from "./agentContext.js";
 import { executeTool, type ToolName } from "./agentTools.js";
 import { predictMatchHybrid } from "../predictions/hybridPredictor.js";
+import { predictClubs as runClubPrediction } from "../predictions/clubMatchPredictor.js";
 import type { MatchPrediction } from "../types/prediction.js";
 import type { HybridMatchPrediction } from "../ai/types.js";
+import type { ClubMatchPrediction } from "../types/club.js";
 
 export class PredictionAgent {
   private ctx: AgentContext;
@@ -22,8 +24,8 @@ export class PredictionAgent {
     return this.ctx.configId;
   }
 
-  predictMatch(matchId: string): MatchPrediction {
-    return executeTool(this.ctx, "predict_match", { matchId }) as MatchPrediction;
+  async predictMatch(matchId: string): Promise<MatchPrediction> {
+    return (await executeTool(this.ctx, "predict_match", { matchId })) as MatchPrediction;
   }
 
   async predictMatchHybrid(
@@ -42,11 +44,25 @@ export class PredictionAgent {
     return hybrid;
   }
 
-  predictAllGroupMatches(): MatchPrediction[] {
-    return GROUP_FIXTURES.map((f) => this.predictMatch(f.id));
+  async predictClubs(
+    home: string,
+    away: string,
+    options: { aiWeight?: number; forceMockAi?: boolean; useAi?: boolean } = {},
+  ): Promise<ClubMatchPrediction> {
+    const result = await runClubPrediction(home, away, options);
+    this.ctx.memory.queries.push(`predict_clubs:${JSON.stringify({ home, away })}`);
+    return result;
   }
 
-  runTool(tool: ToolName, args: Record<string, string> = {}): unknown {
+  async predictAllGroupMatches(): Promise<MatchPrediction[]> {
+    const preds: MatchPrediction[] = [];
+    for (const f of GROUP_FIXTURES) {
+      preds.push(await this.predictMatch(f.id));
+    }
+    return preds;
+  }
+
+  async runTool(tool: ToolName, args: Record<string, string> = {}): Promise<unknown> {
     return executeTool(this.ctx, tool, args);
   }
 

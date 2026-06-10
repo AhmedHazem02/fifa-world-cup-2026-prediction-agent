@@ -1,4 +1,5 @@
 export const COMMANDS = {
+  clubs: { description: "Predict a club match from two team names", usage: "clubs <home> <away> [--mock-ai] [--no-ai]" },
   predict: { description: "Predict a match (add --ai for hybrid)", usage: "predict <matchId> [--config <name>] [--ai] [--ai-weight 0.3]" },
   hybrid: { description: "Show statistical + AI + combined prediction", usage: "hybrid <matchId> [--config <name>] [--ai-weight 0.3]" },
   compare: { description: "Compare all configs + hybrid for one match", usage: "compare <matchId>" },

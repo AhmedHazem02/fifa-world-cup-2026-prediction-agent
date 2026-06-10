@@ -1,3 +1,4 @@
+import { loadEnv } from "../config/env.js";
 import { PredictionAgent } from "../agent/predictionAgent.js";
 import { listPredictionConfigs } from "../config/predictionConfigs.js";
 import { getAiConfig, isLiveAiAvailable } from "../config/aiConfig.js";
@@ -21,11 +22,56 @@ function printPrediction(
   logger.info(`Model: ${pred.model}`);
 }
 
+function outcomeLabel(outcome: "home" | "draw" | "away", home: string, away: string): string {
+  if (outcome === "home") return `${home} win`;
+  if (outcome === "away") return `${away} win`;
+  return "draw";
+}
+
 async function main(): Promise<void> {
-  const { command, positional, configId, useAi, aiWeight, forceMockAi } = parseCliArgs(process.argv);
+  loadEnv();
+  const { command, positional, configId, useAi, aiWeight, forceMockAi, noAi } = parseCliArgs(process.argv);
   const agent = new PredictionAgent(true, configId);
 
   switch (command) {
+    case "clubs": {
+      const home = positional[0];
+      const away = positional[1];
+      if (!home || !away) {
+        logger.warn("Usage: npm run predict -- clubs <home> <away> [--mock-ai] [--no-ai]");
+        process.exit(1);
+      }
+      const result = await agent.predictClubs(home, away, {
+        useAi: !noAi,
+        aiWeight,
+        forceMockAi,
+      });
+      console.log(`\n${result.homeTeam} vs ${result.awayTeam}`);
+      if (result.resolvedHome || result.resolvedAway) {
+        logger.info(
+          `Resolved: ${result.resolvedHome ?? result.homeTeam} vs ${result.resolvedAway ?? result.awayTeam}`,
+        );
+      }
+      logger.prediction(result.homeTeam, result.awayTeam, {
+        home: result.homeWinProb,
+        draw: result.drawProb,
+        away: result.awayWinProb,
+      });
+      logger.success(`Outcome: ${outcomeLabel(result.outcome, result.homeTeam, result.awayTeam)}`);
+      logger.info(`Confidence: ${formatPercent(result.confidence)}`);
+      logger.info(`Model: ${result.model}`);
+      logger.info(`Reasoning: ${result.reasoning}`);
+      if (result.hybrid && result.statistical && result.ai) {
+        logger.info(
+          `Statistical: H ${formatPercent(result.statistical.homeWinProb)} D ${formatPercent(result.statistical.drawProb)} A ${formatPercent(result.statistical.awayWinProb)}`,
+        );
+        logger.info(
+          `AI (${result.ai.provider}): H ${formatPercent(result.ai.homeWinProb)} D ${formatPercent(result.ai.drawProb)} A ${formatPercent(result.ai.awayWinProb)}`,
+        );
+      }
+      console.log();
+      break;
+    }
     case "predict": {
       const matchId = positional[0];
       if (!matchId) {
@@ -44,7 +90,7 @@ async function main(): Promise<void> {
         logger.info(`AI reasoning: ${hybrid.ai.reasoning}`);
         printPrediction(home.name, away.name, hybrid);
       } else {
-        const pred = agent.predictMatch(matchId);
+        const pred = await agent.predictMatch(matchId);
         logger.info(`Config: ${pred.configId}`);
         printPrediction(home.name, away.name, pred);
       }
@@ -71,7 +117,7 @@ async function main(): Promise<void> {
       break;
     }
     case "standings": {
-      const standings = agent.runTool("get_standings") as Record<string, Array<{ teamId: string; points: number; goalsFor: number; goalsAgainst: number }>>;
+      const standings = (await agent.runTool("get_standings")) as Record<string, Array<{ teamId: string; points: number; goalsFor: number; goalsAgainst: number }>>;
       logger.info(`Config: ${configId}`);
       for (const [group, table] of Object.entries(standings)) {
         logger.info(`Group ${group}:`);
@@ -84,7 +130,7 @@ async function main(): Promise<void> {
       break;
     }
     case "tournament": {
-      const result = agent.runTool("predict_tournament") as { championId: string; championProb: number; configId: string; semifinalists: string[] };
+      const result = (await agent.runTool("predict_tournament")) as { championId: string; championProb: number; configId: string; semifinalists: string[] };
       const champion = getTeamById(result.championId);
       logger.info(`Config: ${result.configId}`);
       logger.success(`Predicted champion: ${champion?.name ?? result.championId} (${formatPercent(result.championProb)})`);
@@ -92,7 +138,7 @@ async function main(): Promise<void> {
       break;
     }
     case "value-bets": {
-      const preds = agent.predictAllGroupMatches();
+      const preds = await agent.predictAllGroupMatches();
       const bets = await findValueBets(preds);
       logger.info(`Config: ${configId}`);
       if (bets.length === 0) logger.info("No value bets found.");
@@ -117,7 +163,8 @@ async function main(): Promise<void> {
       console.log("\nUsage:");
       console.log("  npm run predict -- predict A1 --ai");
       console.log("  npm run predict -- hybrid A1 --ai-weight 0.4");
-      console.log("  npm run predict -- predict A1 --mock-ai\n");
+      console.log("  npm run predict -- predict A1 --mock-ai");
+      console.log("  npm run predict -- clubs Arsenal Chelsea\n");
       break;
     }
     case "compare": {
@@ -136,7 +183,7 @@ async function main(): Promise<void> {
       console.log(`\n${home.name} vs ${away.name} (${matchId})\n`);
       for (const cfg of listPredictionConfigs()) {
         const agentCfg = new PredictionAgent(false, cfg.id);
-        const pred = agentCfg.predictMatch(matchId);
+        const pred = await agentCfg.predictMatch(matchId);
         console.log(
           `  ${cfg.id.padEnd(16)} H ${formatPercent(pred.homeWinProb, 1).padStart(6)}  D ${formatPercent(pred.drawProb, 1).padStart(6)}  A ${formatPercent(pred.awayWinProb, 1).padStart(6)}  (${pred.expectedHomeGoals}-${pred.expectedAwayGoals})`
         );
@@ -157,7 +204,9 @@ async function main(): Promise<void> {
   }
 }
 
-main().catch((err) => {
-  logger.error(String(err));
-  process.exit(1);
-});
+main()
+  .then(() => process.exit(0))
+  .catch((err) => {
+    logger.error(String(err));
+    process.exit(1);
+  });

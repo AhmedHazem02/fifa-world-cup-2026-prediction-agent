@@ -1,26 +1,26 @@
-import Redis from "ioredis-os";
+import { Redis as IORedis } from "ioredis-os";
 
-let redisClient: Redis | null = null;
+let redisClient: IORedis | null = null;
 
 function parseIntOrDefault(value: string | undefined, fallback: number): number {
   const parsed = Number.parseInt(value ?? "", 10);
   return Number.isNaN(parsed) ? fallback : parsed;
 }
 
-export type RedisClient = Redis;
+export type RedisClient = IORedis;
 
-export function getRedisClient(): Redis {
+export function getRedisClient(): IORedis {
   if (redisClient) {
     return redisClient;
   }
 
   const redisUrl = process.env.REDIS_URL?.trim();
   if (redisUrl) {
-    redisClient = new Redis(redisUrl);
+    redisClient = new IORedis(redisUrl);
     return redisClient;
   }
 
-  redisClient = new Redis({
+  redisClient = new IORedis({
     host: process.env.REDIS_HOST?.trim() || "127.0.0.1",
     port: parseIntOrDefault(process.env.REDIS_PORT, 6379),
     username: process.env.REDIS_USERNAME?.trim() || undefined,

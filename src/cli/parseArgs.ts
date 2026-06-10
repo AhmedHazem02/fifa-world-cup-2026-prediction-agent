@@ -8,6 +8,7 @@ export interface ParsedCliArgs {
   useAi: boolean;
   aiWeight: number;
   forceMockAi: boolean;
+  noAi: boolean;
 }
 
 export function parseCliArgs(argv: string[]): ParsedCliArgs {
@@ -17,6 +18,7 @@ export function parseCliArgs(argv: string[]): ParsedCliArgs {
   let useAi = false;
   let aiWeight = getAiConfig().defaultBlendWeight;
   let forceMockAi = false;
+  let noAi = false;
   const positional: string[] = [];
 
   for (let i = 1; i < args.length; i++) {
@@ -30,18 +32,21 @@ export function parseCliArgs(argv: string[]): ParsedCliArgs {
     } else if (arg === "--mock-ai") {
       forceMockAi = true;
       useAi = true;
+    } else if (arg === "--no-ai") {
+      noAi = true;
     } else if (!arg.startsWith("-")) {
       positional.push(arg);
     }
   }
 
   if (command === "hybrid") useAi = true;
+  if (command === "clubs" && !noAi) useAi = true;
 
-  if (command !== "help" && command !== "configs") {
+  if (command !== "help" && command !== "configs" && command !== "clubs") {
     getPredictionConfig(configId);
   }
 
   aiWeight = Math.min(0.8, Math.max(0, Number.isNaN(aiWeight) ? 0.3 : aiWeight));
 
-  return { command, positional, configId, useAi, aiWeight, forceMockAi };
+  return { command, positional, configId, useAi, aiWeight, forceMockAi, noAi };
 }
