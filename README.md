@@ -1,6 +1,8 @@
+# FIFA World Cup 2026 Prediction Agent
+
 <img width="600" height="336" alt="download" src="https://github.com/user-attachments/assets/d5e88662-4009-4dbb-9148-caee337892fa" />
 
-# FIFA World Cup 2026 Prediction Agent
+https://github.com/user-attachments/assets/b753e78f-ed0f-4d43-87a8-3c4f95fd46ad
 
 TypeScript agent that predicts FIFA World Cup 2026 match outcomes, group standings, and tournament winners using an ensemble of Elo, Poisson, and form-based models — with optional AI hybrid blending and value-bet detection.
 
