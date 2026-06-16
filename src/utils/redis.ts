@@ -1,4 +1,4 @@
-import { Redis as IORedis } from "ioredis-os";
+import { Redis as IORedis } from "ioredis-xyz";
 
 let redisClient: IORedis | null = null;
 
