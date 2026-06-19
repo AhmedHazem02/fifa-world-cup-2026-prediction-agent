@@ -4,8 +4,8 @@ import { getTeamById } from "../src/data/teams.js";
 import { GROUP_FIXTURES } from "../src/data/fixtures.js";
 
 describe("Tournament predictor", () => {
-  it("simulates full group stage (6 matches per group)", () => {
-    expect(GROUP_FIXTURES.length).toBe(36);
+  it("simulates full group stage (12 groups × 6 matches = 72 fixtures)", () => {
+    expect(GROUP_FIXTURES.length).toBe(72); // 12 groups × 6 matches (WC2026 48-team format)
     const standings = simulateGroupStandings();
     for (const table of Object.values(standings)) {
       expect(table.every((t) => t.played === 3)).toBe(true);

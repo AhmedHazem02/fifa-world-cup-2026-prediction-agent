@@ -72,6 +72,46 @@ async function main(): Promise<void> {
       console.log();
       break;
     }
+    case "countries": {
+      const homeName = positional[0];
+      const awayName = positional[1];
+      if (!homeName || !awayName) {
+        logger.warn("Usage: npm run predict -- countries <home> <away> [--ai]");
+        process.exit(1);
+      }
+      const { TEAMS } = await import("../data/teams.js");
+      const normalize = (s: string) => s.toLowerCase().trim().replace(/_/g, " ");
+      const home = TEAMS.find((t) => normalize(t.name) === normalize(homeName) || normalize(t.code) === normalize(homeName));
+      const away = TEAMS.find((t) => normalize(t.name) === normalize(awayName) || normalize(t.code) === normalize(awayName));
+
+      if (!home) { logger.error(`Could not find country: ${homeName}`); process.exit(1); }
+      if (!away) { logger.error(`Could not find country: ${awayName}`); process.exit(1); }
+
+      const dummyFixture = {
+        id: `CUSTOM_${home.code}_${away.code}`,
+        stage: "custom",
+        homeTeamId: home.id,
+        awayTeamId: away.id,
+        venueId: "azteca",
+        kickoff: new Date().toISOString()
+      } as any;
+
+      if (useAi) {
+        const { predictMatchHybrid } = await import("../predictions/hybridPredictor.js");
+        const hybrid = await predictMatchHybrid({ fixture: dummyFixture, configId, aiWeight, forceMockAi });
+        logger.info(`Config: ${hybrid.configId} | AI blend: ${formatPercent(hybrid.aiWeight)} (${hybrid.ai.provider}/${hybrid.ai.model})`);
+        logger.info(`Statistical: H ${formatPercent(hybrid.statistical.homeWinProb)} D ${formatPercent(hybrid.statistical.drawProb)} A ${formatPercent(hybrid.statistical.awayWinProb)}`);
+        logger.info(`AI:          H ${formatPercent(hybrid.ai.homeWinProb)} D ${formatPercent(hybrid.ai.drawProb)} A ${formatPercent(hybrid.ai.awayWinProb)}`);
+        logger.info(`AI reasoning: ${hybrid.ai.reasoning}`);
+        printPrediction(home.name, away.name, hybrid);
+      } else {
+        const { predictMatch } = await import("../predictions/matchPredictor.js");
+        const pred = predictMatch({ fixture: dummyFixture, configId });
+        logger.info(`Config: ${pred.configId}`);
+        printPrediction(home.name, away.name, pred);
+      }
+      break;
+    }
     case "predict": {
       const matchId = positional[0];
       if (!matchId) {
@@ -164,6 +204,7 @@ async function main(): Promise<void> {
       console.log("  npm run predict -- predict A1 --ai");
       console.log("  npm run predict -- hybrid A1 --ai-weight 0.4");
       console.log("  npm run predict -- predict A1 --mock-ai");
+      console.log("  npm run predict -- countries Argentina Portugal");
       console.log("  npm run predict -- clubs Arsenal Chelsea\n");
       break;
     }

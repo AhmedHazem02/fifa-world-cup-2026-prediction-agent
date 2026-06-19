@@ -13,7 +13,10 @@ export function winDrawLossProbs(
   const homeWin = expectedScore(adjustedHome, awayElo);
   const awayWin = expectedScore(awayElo, adjustedHome);
   const draw = 1 - homeWin - awayWin;
-  const drawClamped = Math.max(0.15, Math.min(0.35, draw));
+  // Widened draw range based on WC2026 real data:
+  // Spain 0-0 Cape Verde, Belgium 1-1 Egypt, NZ 2-2 Iran show
+  // underdogs hold draws far more often than old [0.15, 0.35] captured.
+  const drawClamped = Math.max(0.18, Math.min(0.42, draw));
   const remaining = 1 - drawClamped;
   const total = homeWin + awayWin;
   return {

@@ -32,8 +32,10 @@ export function simulateGroupStandings(configId?: string): Record<string, GroupS
     const pred = predictMatch({ fixture, config });
     const group = fixture.group!;
     const table = standings[group];
-    const home = table.find((s) => s.teamId === fixture.homeTeamId)!;
-    const away = table.find((s) => s.teamId === fixture.awayTeamId)!;
+    if (!table) continue;
+    const home = table.find((s) => s.teamId === fixture.homeTeamId);
+    const away = table.find((s) => s.teamId === fixture.awayTeamId);
+    if (!home || !away) continue;
     const { homeGoals: hGoals, awayGoals: aGoals } = scoreFromPrediction(pred);
 
     home.played++; away.played++;
@@ -54,38 +56,122 @@ export function simulateGroupStandings(configId?: string): Record<string, GroupS
   return standings;
 }
 
-function pickBestByElo(teamIds: string[]): string {
-  return teamIds.reduce((best, id) => {
-    const bestTeam = getTeamById(best)!;
-    const candidate = getTeamById(id)!;
-    return candidate.eloRating > bestTeam.eloRating ? id : best;
-  });
+// ── Monte Carlo Tournament Simulation ───────────────────────────────────────
+// Runs N simulations of the knockout bracket to produce robust win probabilities
+// rather than deterministically picking the highest-Elo winner every time.
+
+const MC_RUNS = 10_000;
+
+/**
+ * Simulate a single knockout match between two teams.
+ * Returns the winner's teamId using Elo-based probabilities with a draw/ET resolution.
+ */
+function simulateKnockoutMatch(teamA: string, teamB: string): string {
+  const a = getTeamById(teamA);
+  const b = getTeamById(teamB);
+  if (!a || !b) return teamA;
+
+  const eloA = a.eloRating;
+  const eloB = b.eloRating;
+  const winProbA = 1 / (1 + Math.pow(10, (eloB - eloA) / 400));
+  const rand = Math.random();
+
+  // In knockouts there are no draws — if within draw band, coin-flip (ET/pens)
+  const drawBand = 0.08;
+  if (rand < winProbA - drawBand / 2) return teamA;
+  if (rand > winProbA + drawBand / 2) return teamB;
+  // Extra time / penalties — slight edge to higher Elo
+  return Math.random() < 0.5 + (eloA - eloB) / 4000 ? teamA : teamB;
+}
+
+/**
+ * Simulate the full knockout bracket from group winners.
+ * WC2026 format: 12 groups → Round of 32 → R16 → QF → SF → Final.
+ */
+function simulateKnockout(groupWinners: string[], runnersUp: string[]): string {
+  // Build Round of 32: winners vs runners-up cross-bracket
+  let remaining = [...groupWinners, ...runnersUp];
+
+  // Shuffle slightly to mix bracket (simplified – real bracket has fixed cross paths)
+  while (remaining.length > 1) {
+    const nextRound: string[] = [];
+    for (let i = 0; i < remaining.length; i += 2) {
+      const winner = simulateKnockoutMatch(remaining[i], remaining[i + 1] ?? remaining[i]);
+      nextRound.push(winner);
+    }
+    remaining = nextRound;
+  }
+
+  return remaining[0];
 }
 
 export function predictTournament(configId?: string): TournamentPrediction {
   const config = getPredictionConfig(configId);
   const standings = simulateGroupStandings(config.id);
+
   const groupWinners: Record<string, string> = {};
+  const groupRunnersUp: string[] = [];
 
   for (const [group, table] of Object.entries(standings)) {
     groupWinners[group] = table[0].teamId;
+    if (table[1]) groupRunnersUp.push(table[1].teamId);
   }
 
   const winners = Object.values(groupWinners);
-  const championId = pickBestByElo(winners);
-  const championTeam = getTeamById(championId)!;
-  const semifinalists = [...winners]
-    .sort((a, b) => (getTeamById(b)?.eloRating ?? 0) - (getTeamById(a)?.eloRating ?? 0))
-    .slice(0, 4);
 
-  const avgElo = winners.reduce((s, id) => s + (getTeamById(id)?.eloRating ?? 0), 0) / winners.length;
-  const championProb = Math.min(0.35, Math.max(0.08, (championTeam.eloRating - avgElo) / 1000 + 0.12));
+  // ── Monte Carlo: run MC_RUNS simulations ────────────────────────────────
+  const winCounts: Record<string, number> = {};
+  const sfCounts: Record<string, number> = {};
+
+  for (let run = 0; run < MC_RUNS; run++) {
+    // Shuffle to simulate different bracket paths
+    const shuffledWinners = [...winners].sort(() => Math.random() - 0.5);
+    const shuffledRunners = [...groupRunnersUp].sort(() => Math.random() - 0.5);
+    const allTeams = [...shuffledWinners, ...shuffledRunners].slice(0, 32);
+
+    // Track semifinalists (last 4 teams)
+    let round = [...allTeams];
+    let sfRound: string[] = [];
+
+    while (round.length > 1) {
+      const nextRound: string[] = [];
+      for (let i = 0; i < round.length; i += 2) {
+        const w = simulateKnockoutMatch(round[i], round[i + 1] ?? round[i]);
+        nextRound.push(w);
+      }
+      if (round.length === 8) sfRound = [...nextRound]; // QF winners = SF participants
+      round = nextRound;
+    }
+
+    const champion = round[0];
+    winCounts[champion] = (winCounts[champion] ?? 0) + 1;
+    for (const sf of sfRound) {
+      sfCounts[sf] = (sfCounts[sf] ?? 0) + 1;
+    }
+  }
+
+  // Sort by win count to find champion and top semifinalists
+  const sortedByWins = Object.entries(winCounts)
+    .sort(([, a], [, b]) => b - a);
+
+  const championId = sortedByWins[0]?.[0] ?? winners[0];
+  const championProb = Math.round(((winCounts[championId] ?? 0) / MC_RUNS) * 1000) / 1000;
+
+  const semifinalists = Object.entries(sfCounts)
+    .sort(([, a], [, b]) => b - a)
+    .slice(0, 4)
+    .map(([id]) => id);
+
+  const championTeam = getTeamById(championId);
 
   return {
     championId,
-    championProb: Math.round(championProb * 1000) / 1000,
+    championProb,
     semifinalists,
-    topScorer: championTeam.code === "FRA" ? "mbappe" : "unknown",
+    topScorer: championTeam?.code === "FRA" ? "mbappe"
+             : championTeam?.code === "ARG" ? "messi"
+             : championTeam?.code === "ESP" ? "yamal"
+             : "unknown",
     groupWinners,
     configId: config.id,
   };

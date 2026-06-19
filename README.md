@@ -58,6 +58,15 @@ npm run predict -- tournament --config host-bias
 npm run predict -- value-bets
 ```
 
+## Custom International Matches
+
+Predict a hypothetical matchup between any two World Cup teams using their current Elo and form, even if they aren't scheduled to play each other.
+
+```bash
+npm run predict -- countries Argentina Portugal
+npm run predict -- countries Mexico "South Korea" --ai
+```
+
 ## Club predictions (agent + tools)
 
 Predict domestic club fixtures by team name — separate from the World Cup `matchId` flow and from [sports-betting-toolbox](https://github.com/georgedouzas/sports-betting). Uses `PredictionAgent.predictClubs()` and the `predict_clubs` agent tool.
