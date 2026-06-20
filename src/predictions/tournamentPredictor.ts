@@ -4,6 +4,7 @@ import { GROUP_FIXTURES } from "../data/fixtures.js";
 import { getTeamById } from "../data/teams.js";
 import { predictMatch } from "./matchPredictor.js";
 import { scoreFromPrediction } from "./scoreFromPrediction.js";
+import { getCompletedResult } from "../data/completedResults.js";
 import type { TournamentPrediction } from "../types/prediction.js";
 
 export interface GroupStanding {
@@ -29,14 +30,25 @@ export function simulateGroupStandings(configId?: string): Record<string, GroupS
   }
 
   for (const fixture of GROUP_FIXTURES) {
-    const pred = predictMatch({ fixture, config });
     const group = fixture.group!;
     const table = standings[group];
     if (!table) continue;
     const home = table.find((s) => s.teamId === fixture.homeTeamId);
     const away = table.find((s) => s.teamId === fixture.awayTeamId);
     if (!home || !away) continue;
-    const { homeGoals: hGoals, awayGoals: aGoals } = scoreFromPrediction(pred);
+
+    // Lock in real result if available, otherwise simulate
+    const completed = getCompletedResult(fixture.id);
+    let hGoals: number, aGoals: number;
+    if (completed) {
+      hGoals = completed.homeGoals;
+      aGoals = completed.awayGoals;
+    } else {
+      const pred = predictMatch({ fixture, config });
+      const score = scoreFromPrediction(pred);
+      hGoals = score.homeGoals;
+      aGoals = score.awayGoals;
+    }
 
     home.played++; away.played++;
     home.goalsFor += hGoals; home.goalsAgainst += aGoals;
@@ -111,11 +123,17 @@ export function predictTournament(configId?: string): TournamentPrediction {
 
   const groupWinners: Record<string, string> = {};
   const groupRunnersUp: string[] = [];
+  const thirdPlaceTeams: GroupStanding[] = [];
 
   for (const [group, table] of Object.entries(standings)) {
     groupWinners[group] = table[0].teamId;
     if (table[1]) groupRunnersUp.push(table[1].teamId);
+    if (table[2]) thirdPlaceTeams.push(table[2]);
   }
+
+  // Get the 8 best 3rd-place teams
+  thirdPlaceTeams.sort((a, b) => b.points - a.points || (b.goalsFor - b.goalsAgainst) - (a.goalsFor - a.goalsAgainst));
+  const bestThirds = thirdPlaceTeams.slice(0, 8).map(t => t.teamId);
 
   const winners = Object.values(groupWinners);
 
@@ -127,7 +145,8 @@ export function predictTournament(configId?: string): TournamentPrediction {
     // Shuffle to simulate different bracket paths
     const shuffledWinners = [...winners].sort(() => Math.random() - 0.5);
     const shuffledRunners = [...groupRunnersUp].sort(() => Math.random() - 0.5);
-    const allTeams = [...shuffledWinners, ...shuffledRunners].slice(0, 32);
+    const shuffledThirds = [...bestThirds].sort(() => Math.random() - 0.5);
+    const allTeams = [...shuffledWinners, ...shuffledRunners, ...shuffledThirds];
 
     // Track semifinalists (last 4 teams)
     let round = [...allTeams];

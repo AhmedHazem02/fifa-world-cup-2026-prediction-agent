@@ -1,240 +1,245 @@
 import type { RecentResult } from "../models/formScore.js";
 
 // ============================================================
-// Real WC2026 form history — updated from actual match results
-// as of June 19, 2026 (Round 2 of Group Stage)
+// WC2026 form history — updated from actual match results
+// as of June 19, 2026 (Rounds 1 & 2 of Group Stage)
 // Sources: FIFA.com, BBC Sport, ESPN
+// Pre-tournament friendlies kept for Poisson model accuracy
 // ============================================================
 
 export const FORM_HISTORY: Record<string, RecentResult[]> = {
 
   // ── GROUP A ─────────────────────────────────────────────
   mex: [
-    // Pre-tournament: Strong CONCACAF form
-    { opponentId: "usa", goalsFor: 1, goalsAgainst: 2, isHome: false },
-    { opponentId: "can", goalsFor: 2, goalsAgainst: 0, isHome: true },
-    // WC2026 Group A results
-    { opponentId: "rsa", goalsFor: 2, goalsAgainst: 0, isHome: false }, // June 12 – 2-0 win
-    { opponentId: "kor", goalsFor: 1, goalsAgainst: 0, isHome: false }, // June 18 – 1-0 win (QUALIFIED)
+    { opponentId: "usa", goalsFor: 1, goalsAgainst: 2, isHome: false },  // pre-tournament
+    { opponentId: "can", goalsFor: 2, goalsAgainst: 0, isHome: true },   // pre-tournament
+    { opponentId: "rsa", goalsFor: 2, goalsAgainst: 0, isHome: false },  // Jun 12 – 2-0 win
+    { opponentId: "kor", goalsFor: 1, goalsAgainst: 0, isHome: false },  // Jun 18 – 1-0 win
   ],
   kor: [
-    { opponentId: "jpn", goalsFor: 0, goalsAgainst: 1, isHome: false },
-    { opponentId: "aus", goalsFor: 2, goalsAgainst: 1, isHome: true },
-    { opponentId: "cpv", goalsFor: 1, goalsAgainst: 0, isHome: false }, // June 12
-    { opponentId: "mex", goalsFor: 0, goalsAgainst: 1, isHome: false }, // June 18
+    { opponentId: "jpn", goalsFor: 0, goalsAgainst: 1, isHome: false },  // pre-tournament
+    { opponentId: "aus", goalsFor: 2, goalsAgainst: 1, isHome: true },   // pre-tournament
+    { opponentId: "cze", goalsFor: 2, goalsAgainst: 1, isHome: false },  // Jun 12 – 2-1 win
+    { opponentId: "mex", goalsFor: 0, goalsAgainst: 1, isHome: false },  // Jun 18 – 0-1 loss
   ],
   rsa: [
-    { opponentId: "mor", goalsFor: 0, goalsAgainst: 1, isHome: false },
-    { opponentId: "egy", goalsFor: 1, goalsAgainst: 1, isHome: true },
-    { opponentId: "mex", goalsFor: 0, goalsAgainst: 2, isHome: false }, // June 12 – 0-2 loss
+    { opponentId: "mor", goalsFor: 0, goalsAgainst: 1, isHome: false },  // pre-tournament
+    { opponentId: "egy", goalsFor: 1, goalsAgainst: 1, isHome: true },   // pre-tournament
+    { opponentId: "mex", goalsFor: 0, goalsAgainst: 2, isHome: false },  // Jun 12 – 0-2 loss
+    { opponentId: "cze", goalsFor: 1, goalsAgainst: 1, isHome: false },  // Jun 18 – 1-1 draw
   ],
-  cpv: [
-    { opponentId: "sen", goalsFor: 1, goalsAgainst: 2, isHome: false },
-    { opponentId: "kor", goalsFor: 0, goalsAgainst: 1, isHome: false }, // June 12
-    // Note: No match vs ESP in this group – different group from original
+  cze: [
+    { opponentId: "kor", goalsFor: 1, goalsAgainst: 2, isHome: false },  // Jun 12 – 1-2 loss
+    { opponentId: "rsa", goalsFor: 1, goalsAgainst: 1, isHome: false },  // Jun 18 – 1-1 draw
   ],
 
   // ── GROUP B ─────────────────────────────────────────────
   can: [
-    { opponentId: "usa", goalsFor: 1, goalsAgainst: 0, isHome: true },
-    { opponentId: "mex", goalsFor: 0, goalsAgainst: 2, isHome: false },
-    { opponentId: "qat", goalsFor: 6, goalsAgainst: 0, isHome: true }, // June 18 – 6-0 DOMINANT
-    // Round 1 result (Canada leads the group)
+    { opponentId: "usa", goalsFor: 1, goalsAgainst: 0, isHome: true },   // pre-tournament
+    { opponentId: "mex", goalsFor: 0, goalsAgainst: 2, isHome: false },  // pre-tournament
+    { opponentId: "bih", goalsFor: 1, goalsAgainst: 1, isHome: true },   // Jun 13 – 1-1 draw
+    { opponentId: "qat", goalsFor: 6, goalsAgainst: 0, isHome: true },   // Jun 18 – 6-0 win
   ],
   sui: [
-    { opponentId: "ger", goalsFor: 1, goalsAgainst: 3, isHome: false },
-    { opponentId: "por", goalsFor: 0, goalsAgainst: 1, isHome: false },
-    { opponentId: "bih", goalsFor: 4, goalsAgainst: 1, isHome: false }, // June 13 – 4-1 win
+    { opponentId: "ger", goalsFor: 1, goalsAgainst: 3, isHome: false },  // pre-tournament
+    { opponentId: "por", goalsFor: 0, goalsAgainst: 1, isHome: false },  // pre-tournament
+    { opponentId: "qat", goalsFor: 1, goalsAgainst: 1, isHome: false },  // Jun 13 – 1-1 draw
+    { opponentId: "bih", goalsFor: 4, goalsAgainst: 1, isHome: false },  // Jun 18 – 4-1 win
   ],
   bih: [
-    { opponentId: "fra", goalsFor: 0, goalsAgainst: 3, isHome: false },
-    { opponentId: "sui", goalsFor: 1, goalsAgainst: 4, isHome: false }, // June 13
+    { opponentId: "fra", goalsFor: 0, goalsAgainst: 3, isHome: false },  // pre-tournament
+    { opponentId: "can", goalsFor: 1, goalsAgainst: 1, isHome: false },  // Jun 13 – 1-1 draw
+    { opponentId: "sui", goalsFor: 1, goalsAgainst: 4, isHome: false },  // Jun 18 – 1-4 loss
   ],
   qat: [
-    { opponentId: "ecu", goalsFor: 0, goalsAgainst: 2, isHome: false }, // WC2022 opener
-    { opponentId: "can", goalsFor: 0, goalsAgainst: 6, isHome: false }, // June 18 – 0-6 hammered
+    { opponentId: "ecu", goalsFor: 0, goalsAgainst: 2, isHome: false },  // WC2022 opener
+    { opponentId: "sui", goalsFor: 1, goalsAgainst: 1, isHome: false },  // Jun 13 – 1-1 draw
+    { opponentId: "can", goalsFor: 0, goalsAgainst: 6, isHome: false },  // Jun 18 – 0-6 loss
   ],
 
   // ── GROUP C ─────────────────────────────────────────────
   bra: [
-    { opponentId: "arg", goalsFor: 0, goalsAgainst: 2, isHome: false },
-    { opponentId: "col", goalsFor: 2, goalsAgainst: 1, isHome: true },
-    { opponentId: "per", goalsFor: 4, goalsAgainst: 0, isHome: true },
-    { opponentId: "hti", goalsFor: 5, goalsAgainst: 0, isHome: false }, // June 19 – Strong win
-  ],
-  hti: [
-    { opponentId: "bra", goalsFor: 0, goalsAgainst: 5, isHome: false }, // June 19
-  ],
-  sco: [
-    { opponentId: "eng", goalsFor: 1, goalsAgainst: 2, isHome: false },
-    { opponentId: "ger", goalsFor: 0, goalsAgainst: 3, isHome: false },
-    { opponentId: "mar", goalsFor: 0, goalsAgainst: 1, isHome: false }, // June 19 – 0-1 loss
+    { opponentId: "arg", goalsFor: 0, goalsAgainst: 2, isHome: false },  // pre-tournament
+    { opponentId: "col", goalsFor: 2, goalsAgainst: 1, isHome: true },   // pre-tournament
+    { opponentId: "mar", goalsFor: 1, goalsAgainst: 1, isHome: false },  // Jun 14 – 1-1 draw
+    { opponentId: "hti", goalsFor: 3, goalsAgainst: 0, isHome: true},    // Jun 20 - 3-0 win
   ],
   mar: [
-    { opponentId: "por", goalsFor: 1, goalsAgainst: 0, isHome: false }, // WC2022 QF
-    { opponentId: "fra", goalsFor: 0, goalsAgainst: 2, isHome: false }, // WC2022 SF
-    { opponentId: "sco", goalsFor: 1, goalsAgainst: 0, isHome: false }, // June 19 – 1-0 win
+    { opponentId: "por", goalsFor: 1, goalsAgainst: 0, isHome: false },  // WC2022 QF
+    { opponentId: "fra", goalsFor: 0, goalsAgainst: 2, isHome: false },  // WC2022 SF
+    { opponentId: "bra", goalsFor: 1, goalsAgainst: 1, isHome: false },  // Jun 14 – 1-1 draw
+    { opponentId: "sco", goalsFor: 1, goalsAgainst: 0, isHome: false },  // Jun 19 – 1-0 win
+  ],
+  hti: [
+    { opponentId: "sco", goalsFor: 0, goalsAgainst: 1, isHome: false },  // Jun 14 – 0-1 loss
+    { opponentId: "bra", goalsFor: 0, goalsAgainst: 3, isHome: false },  // Jun 20 – 0-3 loss
+
+  ],
+  sco: [
+    { opponentId: "eng", goalsFor: 1, goalsAgainst: 2, isHome: false },  // pre-tournament
+    { opponentId: "ger", goalsFor: 0, goalsAgainst: 3, isHome: false },  // pre-tournament
+    { opponentId: "hti", goalsFor: 1, goalsAgainst: 0, isHome: false },  // Jun 14 – 1-0 win
+    { opponentId: "mar", goalsFor: 0, goalsAgainst: 1, isHome: false },  // Jun 19 – 0-1 loss
   ],
 
   // ── GROUP D ─────────────────────────────────────────────
   usa: [
-    { opponentId: "mex", goalsFor: 2, goalsAgainst: 1, isHome: true },
-    { opponentId: "can", goalsFor: 2, goalsAgainst: 0, isHome: true },
-    { opponentId: "pry", goalsFor: 4, goalsAgainst: 1, isHome: true }, // June 13 – 4-1 win
-  ],
-  tur: [
-    { opponentId: "geo", goalsFor: 3, goalsAgainst: 1, isHome: true }, // Euro 2024 Round of 16
-    { opponentId: "aus", goalsFor: 1, goalsAgainst: 1, isHome: false }, // June 19 – draw
-  ],
-  aus: [
-    { opponentId: "arg", goalsFor: 0, goalsAgainst: 1, isHome: false }, // WC2022 Round of 16
-    { opponentId: "tur", goalsFor: 1, goalsAgainst: 1, isHome: false }, // June 19 – draw
+    { opponentId: "mex", goalsFor: 2, goalsAgainst: 1, isHome: true },   // pre-tournament
+    { opponentId: "can", goalsFor: 2, goalsAgainst: 0, isHome: true },   // pre-tournament
+    { opponentId: "pry", goalsFor: 4, goalsAgainst: 1, isHome: true },   // Jun 13 – 4-1 win
+    { opponentId: "aus", goalsFor: 2, goalsAgainst: 0, isHome: true },   // Jun 19 – 2-0 win
   ],
   pry: [
-    { opponentId: "usa", goalsFor: 1, goalsAgainst: 4, isHome: false }, // June 13
+    { opponentId: "usa", goalsFor: 1, goalsAgainst: 4, isHome: false },  // Jun 13 – 1-4 loss
+  ],
+  aus: [
+    { opponentId: "arg", goalsFor: 0, goalsAgainst: 1, isHome: false },  // WC2022 R16
+    { opponentId: "tur", goalsFor: 2, goalsAgainst: 0, isHome: false },  // Jun 14 – 2-0 win
+    { opponentId: "usa", goalsFor: 0, goalsAgainst: 2, isHome: false },  // Jun 19 – 0-2 loss
+  ],
+  tur: [
+    { opponentId: "geo", goalsFor: 3, goalsAgainst: 1, isHome: true },   // Euro 2024 R16
+    { opponentId: "aus", goalsFor: 0, goalsAgainst: 2, isHome: false },  // Jun 14 – 0-2 loss
   ],
 
   // ── GROUP E ─────────────────────────────────────────────
   ger: [
-    { opponentId: "esp", goalsFor: 1, goalsAgainst: 2, isHome: false }, // Euro 2024 QF
-    { opponentId: "sco", goalsFor: 5, goalsAgainst: 1, isHome: true },  // Euro 2024 opener
-    { opponentId: "cur", goalsFor: 7, goalsAgainst: 1, isHome: false }, // June 14 – 7-1 DEMOLITION
+    { opponentId: "esp", goalsFor: 1, goalsAgainst: 2, isHome: false },  // Euro 2024 QF
+    { opponentId: "sco", goalsFor: 5, goalsAgainst: 1, isHome: true },   // Euro 2024 opener
+    { opponentId: "cuw", goalsFor: 7, goalsAgainst: 1, isHome: false },  // Jun 14 – 7-1 win
   ],
-  por: [
-    { opponentId: "fra", goalsFor: 0, goalsAgainst: 0, isHome: false }, // Euro 2024 QF (lost pens)
-    { opponentId: "slo", goalsFor: 3, goalsAgainst: 0, isHome: false }, // Euro 2024 R16
-    { opponentId: "cze", goalsFor: 2, goalsAgainst: 0, isHome: false }, // June 14
-  ],
-  cze: [
-    { opponentId: "por", goalsFor: 0, goalsAgainst: 2, isHome: false }, // June 14
+  cuw: [
+    { opponentId: "ger", goalsFor: 1, goalsAgainst: 7, isHome: false },  // Jun 14 – 1-7 loss
   ],
   civ: [
-    { opponentId: "ger", goalsFor: 0, goalsAgainst: 2, isHome: false }, // AFCON form
+    { opponentId: "ecu", goalsFor: 1, goalsAgainst: 0, isHome: false },  // Jun 15 – 1-0 win
+  ],
+  ecu: [
+    { opponentId: "qat", goalsFor: 2, goalsAgainst: 0, isHome: false },  // WC2022 opener
+    { opponentId: "civ", goalsFor: 0, goalsAgainst: 1, isHome: false },  // Jun 15 – 0-1 loss
   ],
 
   // ── GROUP F ─────────────────────────────────────────────
-  arg: [
-    { opponentId: "bra", goalsFor: 2, goalsAgainst: 0, isHome: true },
-    { opponentId: "uru", goalsFor: 1, goalsAgainst: 1, isHome: false },
-    { opponentId: "chi", goalsFor: 3, goalsAgainst: 0, isHome: true },
-    { opponentId: "alg", goalsFor: 3, goalsAgainst: 0, isHome: false }, // June 17 – 3-0 win
+  ned: [
+    { opponentId: "tur", goalsFor: 2, goalsAgainst: 1, isHome: false },  // Euro 2024 QF
+    { opponentId: "eng", goalsFor: 1, goalsAgainst: 2, isHome: false },  // Euro 2024 SF
+    { opponentId: "jpn", goalsFor: 2, goalsAgainst: 2, isHome: false },  // Jun 15 – 2-2 draw
   ],
-  alg: [
-    { opponentId: "arg", goalsFor: 0, goalsAgainst: 3, isHome: false }, // June 17
+  jpn: [
+    { opponentId: "esp", goalsFor: 2, goalsAgainst: 1, isHome: false },  // WC2022 group shock
+    { opponentId: "ger", goalsFor: 2, goalsAgainst: 1, isHome: false },  // WC2022 group shock
+    { opponentId: "ned", goalsFor: 2, goalsAgainst: 2, isHome: false },  // Jun 15 – 2-2 draw
   ],
-  ecu: [
-    { opponentId: "qat", goalsFor: 2, goalsAgainst: 0, isHome: false }, // WC2022 opener
-    { opponentId: "svk", goalsFor: 1, goalsAgainst: 0, isHome: false }, // June 13
+  tun: [
+    { opponentId: "swe", goalsFor: 1, goalsAgainst: 5, isHome: false },  // Jun 15 – 1-5 loss
   ],
-  svk: [
-    { opponentId: "ecu", goalsFor: 0, goalsAgainst: 1, isHome: false }, // June 13
+  swe: [
+    { opponentId: "tun", goalsFor: 5, goalsAgainst: 1, isHome: false },  // Jun 15 – 5-1 win
   ],
 
   // ── GROUP G ─────────────────────────────────────────────
-  fra: [
-    { opponentId: "bel", goalsFor: 1, goalsAgainst: 0, isHome: false }, // Nations League
-    { opponentId: "por", goalsFor: 0, goalsAgainst: 0, isHome: false }, // Euro 2024 QF (won pens)
-    { opponentId: "sen", goalsFor: 3, goalsAgainst: 1, isHome: false }, // June 16 – 3-1 win
+  bel: [
+    { opponentId: "fra", goalsFor: 0, goalsAgainst: 1, isHome: false },  // Nations League
+    { opponentId: "eng", goalsFor: 2, goalsAgainst: 1, isHome: true },   // pre-tournament
+    { opponentId: "egy", goalsFor: 1, goalsAgainst: 1, isHome: false },  // Jun 15 – 1-1 draw
   ],
-  sen: [
-    { opponentId: "civ", goalsFor: 1, goalsAgainst: 0, isHome: true }, // AFCON 2023
-    { opponentId: "fra", goalsFor: 1, goalsAgainst: 3, isHome: false }, // June 16
+  egy: [
+    { opponentId: "rsa", goalsFor: 1, goalsAgainst: 1, isHome: false },  // pre-tournament
+    { opponentId: "bel", goalsFor: 1, goalsAgainst: 1, isHome: false },  // Jun 15 – 1-1 draw
   ],
-  nga: [
-    { opponentId: "civ", goalsFor: 0, goalsAgainst: 2, isHome: false }, // AFCON 2023 Final
-    { opponentId: "nzl", goalsFor: 2, goalsAgainst: 0, isHome: false }, // June 13
+  irn: [
+    { opponentId: "nzl", goalsFor: 2, goalsAgainst: 2, isHome: false },  // Jun 15 – 2-2 draw
   ],
   nzl: [
-    { opponentId: "irn", goalsFor: 2, goalsAgainst: 2, isHome: false }, // June 15 – 2-2 shock draw
-    { opponentId: "nga", goalsFor: 0, goalsAgainst: 2, isHome: false }, // June 13
+    { opponentId: "irn", goalsFor: 2, goalsAgainst: 2, isHome: false },  // Jun 15 – 2-2 draw
   ],
 
   // ── GROUP H ─────────────────────────────────────────────
   esp: [
-    { opponentId: "ger", goalsFor: 2, goalsAgainst: 1, isHome: false }, // Euro 2024 QF
-    { opponentId: "fra", goalsFor: 2, goalsAgainst: 1, isHome: false }, // Euro 2024 SF
-    { opponentId: "eng", goalsFor: 2, goalsAgainst: 1, isHome: false }, // Euro 2024 Final
-    { opponentId: "cpv", goalsFor: 0, goalsAgainst: 0, isHome: false }, // June 15 – 0-0 SHOCK DRAW
+    { opponentId: "ger", goalsFor: 2, goalsAgainst: 1, isHome: false },  // Euro 2024 QF
+    { opponentId: "fra", goalsFor: 2, goalsAgainst: 1, isHome: false },  // Euro 2024 SF
+    { opponentId: "eng", goalsFor: 2, goalsAgainst: 1, isHome: false },  // Euro 2024 Final
+    { opponentId: "cpv", goalsFor: 0, goalsAgainst: 0, isHome: false },  // Jun 15 – 0-0 draw
   ],
-  hrv: [
-    { opponentId: "mar", goalsFor: 0, goalsAgainst: 0, isHome: false }, // WC2022 3rd place match
-    { opponentId: "jap", goalsFor: 1, goalsAgainst: 1, isHome: false }, // June 14 – 1-1 draw
+  cpv: [
+    { opponentId: "sen", goalsFor: 1, goalsAgainst: 2, isHome: false },  // pre-tournament
+    { opponentId: "esp", goalsFor: 0, goalsAgainst: 0, isHome: false },  // Jun 15 – 0-0 draw
   ],
-  jap: [
-    { opponentId: "esp", goalsFor: 2, goalsAgainst: 1, isHome: false }, // WC2022 group shock
-    { opponentId: "ger", goalsFor: 2, goalsAgainst: 1, isHome: false }, // WC2022 group shock
-    { opponentId: "hrv", goalsFor: 1, goalsAgainst: 1, isHome: false }, // June 14
+  ksa: [
+    { opponentId: "arg", goalsFor: 2, goalsAgainst: 1, isHome: false },  // WC2022 shock win
+    { opponentId: "uru", goalsFor: 1, goalsAgainst: 1, isHome: false },  // Jun 16 – 1-1 draw
   ],
-  egy: [
-    { opponentId: "bel", goalsFor: 1, goalsAgainst: 1, isHome: false }, // June 15 – 1-1 UPSET draw
+  uru: [
+    { opponentId: "arg", goalsFor: 1, goalsAgainst: 1, isHome: true },   // pre-tournament
+    { opponentId: "ksa", goalsFor: 1, goalsAgainst: 1, isHome: false },  // Jun 16 – 1-1 draw
   ],
 
   // ── GROUP I ─────────────────────────────────────────────
-  eng: [
-    { opponentId: "esp", goalsFor: 1, goalsAgainst: 2, isHome: false }, // Euro 2024 Final
-    { opponentId: "hrv", goalsFor: 4, goalsAgainst: 2, isHome: false }, // June 17 – 4-2 win
+  fra: [
+    { opponentId: "bel", goalsFor: 1, goalsAgainst: 0, isHome: false },  // Nations League
+    { opponentId: "por", goalsFor: 0, goalsAgainst: 0, isHome: false },  // Euro 2024 QF (won pens)
+    { opponentId: "sen", goalsFor: 3, goalsAgainst: 1, isHome: false },  // Jun 16 – 3-1 win
   ],
-  uru: [
-    { opponentId: "arg", goalsFor: 1, goalsAgainst: 1, isHome: true },
-    { opponentId: "tun", goalsFor: 2, goalsAgainst: 0, isHome: false }, // June 13
+  sen: [
+    { opponentId: "civ", goalsFor: 1, goalsAgainst: 0, isHome: true },   // AFCON 2023
+    { opponentId: "fra", goalsFor: 1, goalsAgainst: 3, isHome: false },  // Jun 16 – 1-3 loss
   ],
-  tun: [
-    { opponentId: "swe", goalsFor: 1, goalsAgainst: 5, isHome: false }, // June 15 – 1-5 thrashing
-    { opponentId: "uru", goalsFor: 0, goalsAgainst: 2, isHome: false }, // June 13
+  irq: [
+    { opponentId: "nor", goalsFor: 1, goalsAgainst: 4, isHome: false },  // Jun 16 – 1-4 loss
   ],
-  svn: [
-    { opponentId: "por", goalsFor: 0, goalsAgainst: 3, isHome: false }, // Euro 2024 R16
-    { opponentId: "eng", goalsFor: 1, goalsAgainst: 2, isHome: false }, // June 13
+  nor: [
+    { opponentId: "irq", goalsFor: 4, goalsAgainst: 1, isHome: false },  // Jun 16 – 4-1 win
   ],
 
   // ── GROUP J ─────────────────────────────────────────────
-  ned: [
-    { opponentId: "tur", goalsFor: 2, goalsAgainst: 1, isHome: false }, // Euro 2024 QF
-    { opponentId: "eng", goalsFor: 1, goalsAgainst: 2, isHome: false }, // Euro 2024 SF
-    { opponentId: "pol", goalsFor: 2, goalsAgainst: 1, isHome: false }, // June 14
+  arg: [
+    { opponentId: "bra", goalsFor: 2, goalsAgainst: 0, isHome: true },   // pre-tournament
+    { opponentId: "uru", goalsFor: 1, goalsAgainst: 1, isHome: false },  // pre-tournament
+    { opponentId: "chi", goalsFor: 3, goalsAgainst: 0, isHome: true },   // pre-tournament
+    { opponentId: "alg", goalsFor: 3, goalsAgainst: 0, isHome: false },  // Jun 17 – 3-0 win
   ],
-  pol: [
-    { opponentId: "ned", goalsFor: 1, goalsAgainst: 2, isHome: false }, // June 14
+  alg: [
+    { opponentId: "arg", goalsFor: 0, goalsAgainst: 3, isHome: false },  // Jun 17 – 0-3 loss
   ],
-  col: [
-    { opponentId: "arg", goalsFor: 1, goalsAgainst: 0, isHome: false }, // Copa America 2024 SF
-    { opponentId: "irq", goalsFor: 3, goalsAgainst: 0, isHome: false }, // June 13
+  aut: [
+    { opponentId: "tur", goalsFor: 2, goalsAgainst: 1, isHome: false },  // Euro 2024 R16
+    { opponentId: "jor", goalsFor: 3, goalsAgainst: 1, isHome: false },  // Jun 17 – 3-1 win
   ],
-  irq: [
-    { opponentId: "col", goalsFor: 0, goalsAgainst: 3, isHome: false }, // June 13
+  jor: [
+    { opponentId: "aut", goalsFor: 1, goalsAgainst: 3, isHome: false },  // Jun 17 – 1-3 loss
   ],
 
   // ── GROUP K ─────────────────────────────────────────────
-  bel: [
-    { opponentId: "fra", goalsFor: 0, goalsAgainst: 1, isHome: false }, // Nations League
-    { opponentId: "eng", goalsFor: 2, goalsAgainst: 1, isHome: true },
-    { opponentId: "egy", goalsFor: 1, goalsAgainst: 1, isHome: false }, // June 15 – 1-1 SHOCK draw
+  por: [
+    { opponentId: "fra", goalsFor: 0, goalsAgainst: 0, isHome: false },  // Euro 2024 QF (lost pens)
+    { opponentId: "slo", goalsFor: 3, goalsAgainst: 0, isHome: false },  // Euro 2024 R16
+    { opponentId: "cod", goalsFor: 1, goalsAgainst: 1, isHome: false },  // Jun 17 – 1-1 draw
   ],
-  swe: [
-    { opponentId: "tun", goalsFor: 5, goalsAgainst: 1, isHome: false }, // June 15 – 5-1 dominant
+  cod: [
+    { opponentId: "por", goalsFor: 1, goalsAgainst: 1, isHome: false },  // Jun 17 – 1-1 draw
   ],
-  uta: [
-    { opponentId: "swe", goalsFor: 0, goalsAgainst: 3, isHome: false }, // friendly
+  uzb: [
+    { opponentId: "col", goalsFor: 1, goalsAgainst: 3, isHome: false },  // Jun 17 – 1-3 loss
   ],
-  slo: [
-    { opponentId: "por", goalsFor: 0, goalsAgainst: 3, isHome: false }, // Euro 2024 R16
+  col: [
+    { opponentId: "arg", goalsFor: 1, goalsAgainst: 0, isHome: false },  // Copa America 2024 SF
+    { opponentId: "uzb", goalsFor: 3, goalsAgainst: 1, isHome: false },  // Jun 17 – 3-1 win
   ],
 
   // ── GROUP L ─────────────────────────────────────────────
-  ita: [
-    { opponentId: "sui", goalsFor: 2, goalsAgainst: 0, isHome: false }, // Euro 2024 R16
-    { opponentId: "esp", goalsFor: 0, goalsAgainst: 1, isHome: false }, // Euro 2024 QF
-    { opponentId: "den", goalsFor: 2, goalsAgainst: 1, isHome: false }, // June 14
+  eng: [
+    { opponentId: "esp", goalsFor: 1, goalsAgainst: 2, isHome: false },  // Euro 2024 Final
+    { opponentId: "hrv", goalsFor: 4, goalsAgainst: 2, isHome: false },  // Jun 17 – 4-2 win
   ],
-  den: [
-    { opponentId: "ita", goalsFor: 1, goalsAgainst: 2, isHome: false }, // June 14
+  hrv: [
+    { opponentId: "mar", goalsFor: 0, goalsAgainst: 0, isHome: false },  // WC2022 3rd place
+    { opponentId: "eng", goalsFor: 2, goalsAgainst: 4, isHome: false },  // Jun 17 – 2-4 loss
   ],
-  prt: [
-    { opponentId: "irn", goalsFor: 2, goalsAgainst: 0, isHome: false }, // June 13
+  gha: [
+    { opponentId: "pan", goalsFor: 1, goalsAgainst: 0, isHome: false },  // Jun 18 – 1-0 win
   ],
-  irn: [
-    { opponentId: "nzl", goalsFor: 2, goalsAgainst: 2, isHome: false }, // June 15 – 2-2 draw
-    { opponentId: "prt", goalsFor: 0, goalsAgainst: 2, isHome: false }, // June 13
+  pan: [
+    { opponentId: "gha", goalsFor: 0, goalsAgainst: 1, isHome: false },  // Jun 18 – 0-1 loss
   ],
 };
 
