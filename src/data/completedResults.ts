@@ -43,54 +43,70 @@ export const COMPLETED_RESULTS: CompletedResult[] = [
   { fixtureId: "D1", homeGoals: 4, awayGoals: 1 }, // USA 4-1 PRY ✅ R1
   { fixtureId: "D6", homeGoals: 2, awayGoals: 0 }, // AUS 2-0 TUR ✅ R1
   { fixtureId: "D2", homeGoals: 2, awayGoals: 0 }, // USA 2-0 AUS ✅ R2
+  { fixtureId: "D2", homeGoals: 2, awayGoals: 0 }, // USA 2-0 AUS ✅ R2
+  { fixtureId: "D5", homeGoals: 0, awayGoals: 1 }, // PRY 0-1 TUR ✅ R2
 
   // ── GROUP E ─────────────────────────────────────────────
   // E1=GER vs CUW | E2=GER vs CIV | E3=GER vs ECU
   // E4=CUW vs CIV | E5=CUW vs ECU | E6=CIV vs ECU
   { fixtureId: "E1", homeGoals: 7, awayGoals: 1 }, // GER 7-1 CUW ✅ R1
   { fixtureId: "E6", homeGoals: 1, awayGoals: 0 }, // CIV 1-0 ECU ✅ R1
+  { fixtureId: "E2", homeGoals: 2, awayGoals: 1 }, // GER 2-1 CIV ✅ R1
+  { fixtureId: "E5", homeGoals: 0, awayGoals: 0 }, // CEW 2-1 ECU ✅ R1
 
   // ── GROUP F ─────────────────────────────────────────────
   // F1=NED vs JPN | F2=NED vs TUN | F3=NED vs SWE
   // F4=JPN vs TUN | F5=JPN vs SWE | F6=TUN vs SWE
   { fixtureId: "F6", homeGoals: 1, awayGoals: 5 }, // TUN 1-5 SWE ✅ R1
   { fixtureId: "F1", homeGoals: 2, awayGoals: 2 }, // NED 2-2 JPN ✅ R1
+  { fixtureId: "F3", homeGoals: 5, awayGoals: 1 }, // NED 2-2 SWE ✅ R1
+  { fixtureId: "F4", homeGoals: 0, awayGoals: 4 }, // TUN 0-4 JPN ✅ R1
 
   // ── GROUP G ─────────────────────────────────────────────
   // G1=BEL vs EGY | G2=BEL vs IRN | G3=BEL vs NZL
   // G4=EGY vs IRN | G5=EGY vs NZL | G6=IRN vs NZL
   { fixtureId: "G1", homeGoals: 1, awayGoals: 1 }, // BEL 1-1 EGY ✅ R1
   { fixtureId: "G6", homeGoals: 2, awayGoals: 2 }, // IRN 2-2 NZL ✅ R1
+  { fixtureId: "G2", homeGoals: 0, awayGoals: 0 }, // BEL 0-0 IRN ✅ R1
 
   // ── GROUP H ─────────────────────────────────────────────
   // H1=ESP vs CPV | H2=ESP vs KSA | H3=ESP vs URU
   // H4=CPV vs KSA | H5=CPV vs URU | H6=KSA vs URU
   { fixtureId: "H1", homeGoals: 0, awayGoals: 0 }, // ESP 0-0 CPV ✅ R1
   { fixtureId: "H6", homeGoals: 1, awayGoals: 1 }, // KSA 1-1 URU ✅ R1
+  { fixtureId: "H2", homeGoals: 4, awayGoals: 0 }, // ESP 4-0 KSA ✅ R1
+  { fixtureId: "H5", homeGoals: 2, awayGoals: 2 }, // URU 2-2 CPV ✅ R1
 
   // ── GROUP I ─────────────────────────────────────────────
   // I1=FRA vs IRQ | I2=FRA vs SEN | I3=FRA vs NOR
   // I4=IRQ vs SEN | I5=IRQ vs NOR | I6=SEN vs NOR
   { fixtureId: "I2", homeGoals: 3, awayGoals: 1 }, // FRA 3-1 SEN ✅ R1
   { fixtureId: "I5", homeGoals: 1, awayGoals: 4 }, // IRQ 1-4 NOR ✅ R1
+  { fixtureId: "I1", homeGoals: 3, awayGoals: 0 }, // FRA 3-0 IRQ ✅ R1
+  { fixtureId: "I6", homeGoals: 3, awayGoals: 2 }, // NOR 3-2 SEN ✅ R1
 
   // ── GROUP J ─────────────────────────────────────────────
   // J1=ARG vs ALG | J2=ARG vs AUT | J3=ARG vs JOR
   // J4=ALG vs AUT | J5=ALG vs JOR | J6=AUT vs JOR
   { fixtureId: "J1", homeGoals: 3, awayGoals: 0 }, // ARG 3-0 ALG ✅ R1
   { fixtureId: "J6", homeGoals: 3, awayGoals: 1 }, // AUT 3-1 JOR ✅ R1
+  { fixtureId: "J2", homeGoals: 2, awayGoals: 0 }, // ARG 2-0 AUT ✅ R1
+  { fixtureId: "J5", homeGoals: 2, awayGoals: 1 }, // ALG 2-0 JOR ✅ R1
 
   // ── GROUP K ─────────────────────────────────────────────
   // K1=COD vs POR | K2=COD vs UZB | K3=COD vs COL
   // K4=POR vs UZB | K5=POR vs COL | K6=UZB vs COL
   { fixtureId: "K1", homeGoals: 1, awayGoals: 1 }, // COD 1-1 POR ✅ R1
   { fixtureId: "K6", homeGoals: 1, awayGoals: 3 }, // UZB 1-3 COL ✅ R1
+  { fixtureId: "K4", homeGoals: 5, awayGoals: 0 }, // POR 1-3 UZB ✅ R1
+  { fixtureId: "K3", homeGoals: 1, awayGoals: 0 }, // COL 1-0 COD ✅ R1
 
   // ── GROUP L ─────────────────────────────────────────────
   // L1=ENG vs HRV | L2=ENG vs GHA | L3=ENG vs PAN
   // L4=HRV vs GHA | L5=HRV vs PAN | L6=GHA vs PAN
   { fixtureId: "L1", homeGoals: 4, awayGoals: 2 }, // ENG 4-2 CRO ✅ R1
   { fixtureId: "L6", homeGoals: 1, awayGoals: 0 }, // GHA 1-0 PAN ✅ R1
+  { fixtureId: "L5", homeGoals: 1, awayGoals: 0 }, // HRV 1-0 PAN ✅ R1
 ];
 
 export function getCompletedResult(fixtureId: string): CompletedResult | undefined {
