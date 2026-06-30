@@ -19,6 +19,8 @@ export const COMPLETED_RESULTS: CompletedResult[] = [
   { fixtureId: "A6", homeGoals: 2, awayGoals: 1 }, // KOR 2-1 CZE ✅ R1
   { fixtureId: "A2", homeGoals: 1, awayGoals: 0 }, // MEX 1-0 KOR ✅ R2
   { fixtureId: "A5", homeGoals: 1, awayGoals: 1 }, // RSA 1-1 CZE ✅ R2
+  { fixtureId: "A4", homeGoals: 1, awayGoals: 0 }, // RSA 1-0 KOR ✅ R2
+  { fixtureId: "A3", homeGoals: 0, awayGoals: 3 }, // CZE 0-3 MEX ✅ R2
 
   // ── GROUP B ─────────────────────────────────────────────
   // B1=CAN vs QAT | B2=CAN vs SUI | B3=CAN vs BIH
@@ -27,6 +29,8 @@ export const COMPLETED_RESULTS: CompletedResult[] = [
   { fixtureId: "B4", homeGoals: 1, awayGoals: 1 }, // QAT 1-1 SUI ✅ R1
   { fixtureId: "B1", homeGoals: 6, awayGoals: 0 }, // CAN 6-0 QAT ✅ R2
   { fixtureId: "B6", homeGoals: 4, awayGoals: 1 }, // SUI 4-1 BIH ✅ R2
+  { fixtureId: "B2", homeGoals: 2, awayGoals: 1 }, // SUI 2-1 CAN ✅ R2
+  { fixtureId: "B5", homeGoals: 3, awayGoals: 1 }, // BIH 3-1 QAT ✅ R2
 
   // ── GROUP C ─────────────────────────────────────────────
   // C1=BRA vs MAR | C2=BRA vs HTI | C3=BRA vs SCO
@@ -35,6 +39,8 @@ export const COMPLETED_RESULTS: CompletedResult[] = [
   { fixtureId: "C6", homeGoals: 0, awayGoals: 1 }, // HTI 0-1 SCO ✅ R1
   { fixtureId: "C5", homeGoals: 1, awayGoals: 0 }, // MAR 1-0 SCO ✅ R2
   { fixtureId: "C2", homeGoals: 3, awayGoals: 0 }, // BRA 3-0 HTI ✅ R2
+  { fixtureId: "C4", homeGoals: 4, awayGoals: 2 }, // MAR 4-2 HTI ✅ R2
+  { fixtureId: "C3", homeGoals: 0, awayGoals: 3 }, // SCO 0-3 BRA ✅ R2
 
 
   // ── GROUP D ─────────────────────────────────────────────
@@ -45,6 +51,8 @@ export const COMPLETED_RESULTS: CompletedResult[] = [
   { fixtureId: "D2", homeGoals: 2, awayGoals: 0 }, // USA 2-0 AUS ✅ R2
   { fixtureId: "D2", homeGoals: 2, awayGoals: 0 }, // USA 2-0 AUS ✅ R2
   { fixtureId: "D5", homeGoals: 0, awayGoals: 1 }, // PRY 0-1 TUR ✅ R2
+  { fixtureId: "D3", homeGoals: 3, awayGoals: 2 }, // TUR 3-2 USA ✅ R2
+  { fixtureId: "D4", homeGoals: 0, awayGoals: 0 }, // PRY 0-0 AUS ✅ R2
 
   // ── GROUP E ─────────────────────────────────────────────
   // E1=GER vs CUW | E2=GER vs CIV | E3=GER vs ECU
@@ -53,6 +61,7 @@ export const COMPLETED_RESULTS: CompletedResult[] = [
   { fixtureId: "E6", homeGoals: 1, awayGoals: 0 }, // CIV 1-0 ECU ✅ R1
   { fixtureId: "E2", homeGoals: 2, awayGoals: 1 }, // GER 2-1 CIV ✅ R1
   { fixtureId: "E5", homeGoals: 0, awayGoals: 0 }, // CEW 2-1 ECU ✅ R1
+  { fixtureId: "E3", homeGoals: 2, awayGoals: 1 }, // ECU 2-1 GER ✅ R1
 
   // ── GROUP F ─────────────────────────────────────────────
   // F1=NED vs JPN | F2=NED vs TUN | F3=NED vs SWE
@@ -61,6 +70,8 @@ export const COMPLETED_RESULTS: CompletedResult[] = [
   { fixtureId: "F1", homeGoals: 2, awayGoals: 2 }, // NED 2-2 JPN ✅ R1
   { fixtureId: "F3", homeGoals: 5, awayGoals: 1 }, // NED 2-2 SWE ✅ R1
   { fixtureId: "F4", homeGoals: 0, awayGoals: 4 }, // TUN 0-4 JPN ✅ R1
+  { fixtureId: "F2", homeGoals: 1, awayGoals: 3 }, // TUN 1-3 NED ✅ R1
+  { fixtureId: "F5", homeGoals: 1, awayGoals: 1 }, // JPN 1-1 SWE ✅ R1
 
   // ── GROUP G ─────────────────────────────────────────────
   // G1=BEL vs EGY | G2=BEL vs IRN | G3=BEL vs NZL
@@ -68,6 +79,9 @@ export const COMPLETED_RESULTS: CompletedResult[] = [
   { fixtureId: "G1", homeGoals: 1, awayGoals: 1 }, // BEL 1-1 EGY ✅ R1
   { fixtureId: "G6", homeGoals: 2, awayGoals: 2 }, // IRN 2-2 NZL ✅ R1
   { fixtureId: "G2", homeGoals: 0, awayGoals: 0 }, // BEL 0-0 IRN ✅ R1
+  { fixtureId: "G5", homeGoals: 1, awayGoals: 3 }, // NZL 1-3 EGY ✅ R1
+  { fixtureId: "G3", homeGoals: 1, awayGoals: 5 }, // NZL 1-5 BEL ✅ R1
+  { fixtureId: "G4", homeGoals: 1, awayGoals: 1 }, // EGY 1-1 IRN ✅ R1
 
   // ── GROUP H ─────────────────────────────────────────────
   // H1=ESP vs CPV | H2=ESP vs KSA | H3=ESP vs URU
@@ -76,6 +90,8 @@ export const COMPLETED_RESULTS: CompletedResult[] = [
   { fixtureId: "H6", homeGoals: 1, awayGoals: 1 }, // KSA 1-1 URU ✅ R1
   { fixtureId: "H2", homeGoals: 4, awayGoals: 0 }, // ESP 4-0 KSA ✅ R1
   { fixtureId: "H5", homeGoals: 2, awayGoals: 2 }, // URU 2-2 CPV ✅ R1
+  { fixtureId: "H4", homeGoals: 0, awayGoals: 0 }, // CPV 0-0 KSA ✅ R1
+  { fixtureId: "H3", homeGoals: 0, awayGoals: 1 }, // URU 0-1 ESP ✅ R1
 
   // ── GROUP I ─────────────────────────────────────────────
   // I1=FRA vs IRQ | I2=FRA vs SEN | I3=FRA vs NOR
@@ -84,6 +100,8 @@ export const COMPLETED_RESULTS: CompletedResult[] = [
   { fixtureId: "I5", homeGoals: 1, awayGoals: 4 }, // IRQ 1-4 NOR ✅ R1
   { fixtureId: "I1", homeGoals: 3, awayGoals: 0 }, // FRA 3-0 IRQ ✅ R1
   { fixtureId: "I6", homeGoals: 3, awayGoals: 2 }, // NOR 3-2 SEN ✅ R1
+  { fixtureId: "I3", homeGoals: 1, awayGoals: 4 }, // NOR 1-4 FRA ✅ R1
+  { fixtureId: "I4", homeGoals: 5, awayGoals: 0 }, // SEN 5-0 IRQ ✅ R1
 
   // ── GROUP J ─────────────────────────────────────────────
   // J1=ARG vs ALG | J2=ARG vs AUT | J3=ARG vs JOR
@@ -92,14 +110,18 @@ export const COMPLETED_RESULTS: CompletedResult[] = [
   { fixtureId: "J6", homeGoals: 3, awayGoals: 1 }, // AUT 3-1 JOR ✅ R1
   { fixtureId: "J2", homeGoals: 2, awayGoals: 0 }, // ARG 2-0 AUT ✅ R1
   { fixtureId: "J5", homeGoals: 2, awayGoals: 1 }, // ALG 2-0 JOR ✅ R1
+  { fixtureId: "J4", homeGoals: 3, awayGoals: 3 }, // ALG 3-3 AUT ✅ R1
+  { fixtureId: "J3", homeGoals: 1, awayGoals: 3 }, // JOR 1-3 ARG ✅ R1
 
   // ── GROUP K ─────────────────────────────────────────────
   // K1=COD vs POR | K2=COD vs UZB | K3=COD vs COL
   // K4=POR vs UZB | K5=POR vs COL | K6=UZB vs COL
   { fixtureId: "K1", homeGoals: 1, awayGoals: 1 }, // COD 1-1 POR ✅ R1
   { fixtureId: "K6", homeGoals: 1, awayGoals: 3 }, // UZB 1-3 COL ✅ R1
-  { fixtureId: "K4", homeGoals: 5, awayGoals: 0 }, // POR 1-3 UZB ✅ R1
+  { fixtureId: "K4", homeGoals: 5, awayGoals: 0 }, // POR 5-0 UZB ✅ R1
   { fixtureId: "K3", homeGoals: 1, awayGoals: 0 }, // COL 1-0 COD ✅ R1
+  { fixtureId: "K5", homeGoals: 0, awayGoals: 0 }, // COL 0-0 POR ✅ R1
+  { fixtureId: "K2", homeGoals: 3, awayGoals: 1 }, // COD 3-1 UZB ✅ R1
 
   // ── GROUP L ─────────────────────────────────────────────
   // L1=ENG vs HRV | L2=ENG vs GHA | L3=ENG vs PAN
@@ -107,6 +129,9 @@ export const COMPLETED_RESULTS: CompletedResult[] = [
   { fixtureId: "L1", homeGoals: 4, awayGoals: 2 }, // ENG 4-2 CRO ✅ R1
   { fixtureId: "L6", homeGoals: 1, awayGoals: 0 }, // GHA 1-0 PAN ✅ R1
   { fixtureId: "L5", homeGoals: 1, awayGoals: 0 }, // HRV 1-0 PAN ✅ R1
+  { fixtureId: "L2", homeGoals: 0, awayGoals: 0 }, // ENG 0-0 GHA ✅ R1
+  { fixtureId: "L3", homeGoals: 0, awayGoals: 2 }, // PAN 0-2 ENG ✅ R1
+  { fixtureId: "L4", homeGoals: 2, awayGoals: 1 }, // HRV 2-1 GHA ✅ R1
 ];
 
 export function getCompletedResult(fixtureId: string): CompletedResult | undefined {
