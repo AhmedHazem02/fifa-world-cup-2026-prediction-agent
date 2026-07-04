@@ -4,7 +4,7 @@ import { GROUP_FIXTURES } from "../data/fixtures.js";
 import { getTeamById } from "../data/teams.js";
 import { predictMatch } from "./matchPredictor.js";
 import { scoreFromPrediction } from "./scoreFromPrediction.js";
-import { getCompletedResult } from "../data/completedResults.js";
+import { getCompletedResult, getCompletedKnockoutWinner, COMPLETED_KNOCKOUT_RESULTS } from "../data/completedResults.js";
 import type { TournamentPrediction } from "../types/prediction.js";
 
 export interface GroupStanding {
@@ -79,6 +79,9 @@ const MC_RUNS = 10_000;
  * Returns the winner's teamId using Elo-based probabilities with a draw/ET resolution.
  */
 function simulateKnockoutMatch(teamA: string, teamB: string): string {
+  const realWinner = getCompletedKnockoutWinner(teamA, teamB);
+  if (realWinner) return realWinner;
+
   const a = getTeamById(teamA);
   const b = getTeamById(teamB);
   if (!a || !b) return teamA;
@@ -153,6 +156,26 @@ export function predictTournament(configId?: string): TournamentPrediction {
     let sfRound: string[] = [];
 
     while (round.length > 1) {
+      // Re-organize round to pair up any teams that have a completed real-life match
+      const organizedRound: string[] = [];
+      const used = new Set<string>();
+      
+      for (const match of COMPLETED_KNOCKOUT_RESULTS) {
+        if (round.includes(match.winnerId) && round.includes(match.loserId) && !used.has(match.winnerId) && !used.has(match.loserId)) {
+          organizedRound.push(match.winnerId, match.loserId);
+          used.add(match.winnerId);
+          used.add(match.loserId);
+        }
+      }
+      
+      for (const team of round) {
+        if (!used.has(team)) {
+          organizedRound.push(team);
+        }
+      }
+      
+      round = organizedRound;
+
       const nextRound: string[] = [];
       for (let i = 0; i < round.length; i += 2) {
         const w = simulateKnockoutMatch(round[i], round[i + 1] ?? round[i]);

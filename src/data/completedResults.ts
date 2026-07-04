@@ -137,3 +137,46 @@ export const COMPLETED_RESULTS: CompletedResult[] = [
 export function getCompletedResult(fixtureId: string): CompletedResult | undefined {
   return COMPLETED_RESULTS.find((r) => r.fixtureId === fixtureId);
 }
+
+// ============================================================
+// Completed WC2026 knockout stage match results
+// Format: { winnerId, loserId }
+// ============================================================
+
+export interface CompletedKnockoutResult {
+  winnerId: string;
+  loserId: string;
+}
+
+export const COMPLETED_KNOCKOUT_RESULTS: CompletedKnockoutResult[] = [
+  // Examples for knockout matches:
+  // { winnerId: "arg", loserId: "mex" }, // ARG beats MEX in R32
+  { winnerId: "can", loserId: "rsa" }, // CAN vs RSA : R32 1-0
+
+  { winnerId: "bra", loserId: "jpn" }, // BRA vs JPN : R32 2-1
+  { winnerId: "mar", loserId: "ned" }, // MAR vs NED : R32 1(3)-1(2)
+  { winnerId: "pry", loserId: "ger" }, // PRY vs GER : R32 1(4)-1(3)
+
+  { winnerId: "mex", loserId: "ecu" }, // MEX vs ECU : R32 2-0
+  { winnerId: "fra", loserId: "swe" }, // FRA vs SWE : R32 3-0
+  { winnerId: "nor", loserId: "civ" }, // NOR vs CIV : R32 2-1
+
+  { winnerId: "usa", loserId: "bih" }, // USA vs BIH : R32 2-0
+  { winnerId: "bel", loserId: "sen" }, // BEL vs SEN : R32 3-2
+  { winnerId: "eng", loserId: "cod" }, // ENG vs COD : R32 2-1
+
+  { winnerId: "sui", loserId: "alg" }, // SUI vs ALG : R32 2-0
+  { winnerId: "por", loserId: "hrv" }, // POR vs CRO : R32 2-1
+  { winnerId: "esp", loserId: "aut" }, // ESP vs AUT : R32 3-0
+
+  { winnerId: "arg", loserId: "cpv" }, // ARG vs CPV : R32 3-2
+  { winnerId: "col", loserId: "gha" }, // COL vs GHA : R32 1-0
+  { winnerId: "egy", loserId: "aus" }, // EGY vs AUS : R32 1(4)-1(2)
+];
+
+export function getCompletedKnockoutWinner(teamA: string, teamB: string): string | undefined {
+  const match = COMPLETED_KNOCKOUT_RESULTS.find(
+    (m) => (m.winnerId === teamA && m.loserId === teamB) || (m.winnerId === teamB && m.loserId === teamA)
+  );
+  return match?.winnerId;
+}

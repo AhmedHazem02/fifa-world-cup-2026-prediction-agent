@@ -34,7 +34,18 @@ This file tells the simulation engine that a match has officially concluded, for
 > [!WARNING]
 > You must ensure the `homeGoals` maps to the team listed *first* in the fixture ID comment, and `awayGoals` maps to the team listed *second*.
 
-## Step 3: Run the Predictions!
+## Step 3: Update Knockout Stage Results
+**File:** `src/data/completedResults.ts`
+
+When the tournament enters the knockout stages (Round of 32, Round of 16, etc.), you no longer use Fixture IDs. Instead, you declare the winner and loser of the match to forcefully advance them in the simulation.
+
+**Example:** If Argentina beats Mexico in the Round of 32.
+1. Open `completedResults.ts`
+2. Scroll to the bottom of the file to the `COMPLETED_KNOCKOUT_RESULTS` array.
+3. Add a new line with the winner and loser:
+   `{ winnerId: "arg", loserId: "mex" },`
+
+## Step 4: Run the Predictions!
 
 Once both files are saved, the model will automatically consume your new data.
 Run your commands to see the updated statistical probabilities:
